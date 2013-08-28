@@ -29,8 +29,45 @@ require File.expand_path(File.dirname(__FILE__) + '/neo')
 #
 # Your goal is to write the score method.
 
-def score(dice)
-  # You need to write this method
+# def initialize(score = 0, rolled = [])
+#   @score = score
+#   rolled = rolled
+# end
+
+def score(rolled)
+  @score = 0
+  if rolled == [] || rolled == nil || rolled == ""
+    then @score = 0
+  else
+
+    tallyh = Hash[*rolled.group_by{|i| i}.map{|k,v| [k, v.count] }.flatten]
+    case
+    when tallyh[2] != nil && tallyh[2] >= 3 then @score += 200
+    when tallyh[3] != nil && tallyh[3] >= 3 then @score += 300
+    when tallyh[4] != nil && tallyh[4] >= 3 then @score += 400
+    when tallyh[6] != nil && tallyh[6] >= 3 then @score += 600
+    end
+
+    cull = rolled.delete_if{|e| e != 1 && e !=5}
+    ones = cull.find_all{|die| die == 1}
+    fives = cull.find_all{|die| die == 5}
+    if ones.count >=3 && ones.count > 0
+      3.times{ones.pop}
+      @score += 1000
+      @score += (ones.count * 100)
+    else
+      @score += (ones.count * 100)
+    end
+
+    if fives.count >= 3 && fives.count > 0
+      3.times{fives.pop}
+      @score += 500
+      @score += (fives.count * 50)
+    else
+      @score += (fives.count * 50)
+    end
+  end
+  @score
 end
 
 class AboutScoringProject < Neo::Koan
