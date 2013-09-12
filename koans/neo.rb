@@ -119,11 +119,11 @@ module Neo
     def use_colors?
       return false if ENV['NO_COLOR']
       if ENV['ANSI_COLOR'].nil?
-        if using_windows?
-          using_win32console
-        else
+        # if using_windows?
+        #   using_win32console
+        # else
           return true
-        end
+        # end
       else
         ENV['ANSI_COLOR'] =~ /^(t|y)/i
       end
